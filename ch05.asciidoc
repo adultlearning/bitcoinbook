@@ -13,7 +13,7 @@ In this chapter we will look at the second meaning, where wallets are containers
 
 In this section we summarize the various technologies used to construct user-friendly, secure, and flexible bitcoin wallets.
 
-((("wallets", "contents of")))A common misconception about bitcoin is that bitcoin wallets contain bitcoin. In fact, the wallet contains only keys. The "coins" are recorded in the blockchain on the bitcoin network. Users control the coins on the network by signing transactions with the keys in their wallets. ((("keychains")))In a sense, a bitcoin wallet is a _keychain_.
+((("wallets", "contents of")))A common misconception about bitcoin is that bitcoin wallets contain bitcoin. In fact, the wallet contains only keys. The "coins" are recorded in the blockchain on the bitcoin network. Users control the coins on the network by signing transactions with the keys in their wallets. ((("keychains")))<In a sense, a bitcoin wallet is a _keychain_.>
 
 [TIP]
 ====
@@ -24,7 +24,7 @@ Bitcoin wallets contain keys, not coins. Each user has a wallet containing keys.
 
 ((("JBOK wallets", seealso="wallets")))((("wallets", "types of", "JBOK wallets")))((("nondeterministic wallets", seealso="wallets")))The first type is a _nondeterministic wallet_, where each key is independently generated from a random number. The keys are not related to each other. This type of wallet is also known as a JBOK wallet from the phrase "Just a Bunch Of Keys."
 
-((("deterministic wallets", seealso="wallets")))The second type of wallet is a _deterministic wallet_, where all the keys are derived from a single master key, known as the _seed_. All the keys in this type of wallet are related to each other and can be generated again if one has the original seed. ((("key derivation methods")))There are a number of different _key derivation_ methods used in deterministic wallets. ((("hierarchical deterministic (HD) wallets", seealso="wallets")))The most commonly used derivation method uses a tree-like structure and is known as a _hierarchical deterministic_ or _HD_ wallet.
+((("deterministic wallets", seealso="wallets")))The second type of wallet is a _deterministic wallet_, <where all the keys are derived from a single master key, known as the _seed_.> All the keys in this type of wallet are related to each other and can be generated again if one has the original seed. ((("key derivation methods")))There are a number of different _key derivation_ methods used in deterministic wallets. ((("hierarchical deterministic (HD) wallets", seealso="wallets")))<The most commonly used derivation method uses a tree-like structure and is known as a _hierarchical deterministic_ or _HD_ wallet.>
 
 ((("mnemonic code words")))Deterministic wallets are initialized from a seed. To make these easier to use, seeds are encoded as English words, also known as _mnemonic code words_.
 
@@ -33,7 +33,9 @@ The next few sections introduce each of these technologies at a high level.
 [[random_wallet]]
 ==== Nondeterministic (Random) Wallets
 
-((("wallets", "types of", "nondeterministic (random) wallets")))In the first bitcoin wallet (now called Bitcoin Core), wallets were collections of randomly generated private keys. For example, the original Bitcoin Core client pregenerates 100 random private keys when first started and generates more keys as needed, using each key only once.  Such wallets are being replaced with deterministic wallets because they are cumbersome to manage, back up, and import. The disadvantage of random keys is that if you generate many of them you must keep copies of all of them, meaning that the wallet must be backed up frequently. Each key must be backed up, or the funds it controls are irrevocably lost if the wallet becomes inaccessible. This conflicts directly with the principle of avoiding address reuse, by using each bitcoin address for only one transaction. Address reuse reduces privacy by associating multiple transactions and addresses with each other. A Type-0 nondeterministic wallet is a poor choice of wallet, especially if you want to avoid address reuse because it means managing many keys, which creates the need for frequent backups. Although the Bitcoin Core client includes a Type-0 wallet, using this wallet is discouraged by developers of Bitcoin Core. <<Type0_wallet>> shows a nondeterministic wallet, containing a loose collection of random keys.
+((("wallets", "types of", "nondeterministic (random) wallets")))In the first bitcoin wallet (now called Bitcoin Core), wallets were collections of randomly generated private keys. <For example, the original Bitcoin Core client pregenerates 100 random private keys when first started and generates more keys as needed, using each key only once.>  Such wallets are being replaced with deterministic wallets because they are cumbersome to manage, back up, and import. The disadvantage of random keys is that if you generate many of them you must keep copies of all of them, meaning that the wallet must be backed up frequently. Each key must be backed up, or the funds it controls are irrevocably lost if the wallet becomes inaccessible. This conflicts directly with the principle of avoiding address reuse, by using each bitcoin address for only one transaction. <Address reuse reduces privacy by associating multiple transactions and addresses with each other.> A Type-0 nondeterministic wallet is a poor choice of wallet, especially if you want to avoid address reuse because it means managing many keys, which creates the need for frequent backups. Although the Bitcoin Core client includes a Type-0 wallet, using this wallet is discouraged by developers of Bitcoin Core. <<Type0_wallet>> shows a nondeterministic wallet, containing a loose collection of random keys.
+
+<!-- type 0 is not generated, just keys -->
 
 [TIP]
 ====
@@ -63,13 +65,13 @@ image::images/mbc2_0502.png["Deterministic Wallet"]
 .Type-2 HD wallet: a tree of keys generated from a single seed
 image::images/mbc2_0503.png["HD wallet"]
 
-HD wallets offer two major advantages over random (nondeterministic) keys. First, the tree structure can be used to express additional organizational meaning, such as when a specific branch of subkeys is used to receive incoming payments and a different branch is used to receive change from outgoing payments. Branches of keys can also be used in corporate settings, allocating different branches to departments, subsidiaries, specific functions, or accounting categories.
+HD wallets offer two major advantages over random (nondeterministic) keys. <First, the tree structure can be used to express additional organizational meaning>, such as when a specific branch of subkeys is used to receive incoming payments and a different branch is used to receive change from outgoing payments. Branches of keys can also be used in corporate settings, allocating different branches to departments, subsidiaries, specific functions, or accounting categories.
 
-The second advantage of HD wallets is that users can create a sequence of public keys without having access to the corresponding private keys. This allows HD wallets to be used on an insecure server or in a receive-only capacity, issuing a different public key for each transaction. The public keys do not need to be preloaded or derived in advance, yet the server doesn't have the private keys that can spend the funds.
+The second advantage of HD wallets is that users can <create a sequence of public keys without having access to the corresponding private keys.> This allows HD wallets to be used on an insecure server or in a receive-only capacity, issuing a different public key for each transaction. The public keys do not need to be preloaded or derived in advance, yet the server doesn't have the private keys that can spend the funds.
 
 ==== Seeds and Mnemonic Codes (BIP-39)
 
-((("wallets", "technology of", "seeds and mnemonic codes")))((("mnemonic code words")))((("bitcoin improvement proposals", "Mnemonic Code Words (BIP-39)")))HD wallets are a very powerful mechanism for managing many keys and addresses. They are even more useful if they are combined with a standardized way of creating seeds from a sequence of English words that are easy to transcribe, export, and import across wallets. This is known as a _mnemonic_ and the standard is defined by BIP-39. Today, most bitcoin wallets (as well as wallets for other cryptocurrencies) use this standard and can import and export seeds for backup and recovery using interoperable mnemonics.
+((("wallets", "technology of", "seeds and mnemonic codes")))((("mnemonic code words")))((("bitcoin improvement proposals", "Mnemonic Code Words (BIP-39)")))HD wallets are a very powerful mechanism for managing many keys and addresses. They are even more useful if they are combined with a standardized way of creating seeds from a sequence of English words that are easy to transcribe, export, and import across wallets. <This is known as a _mnemonic_ and the standard is defined by BIP-39.> Today, most bitcoin wallets (as well as wallets for other cryptocurrencies) use this standard and can import and export seeds for backup and recovery using interoperable mnemonics.
 
 Let's look at this from a practical perspective. Which of the following seeds is easier to transcribe, record on paper, read without error, export, and import into another wallet?
 
@@ -87,15 +89,15 @@ garbage claim echo media make crunch
 ==== Wallet Best Practices
 
 ((("wallets", "best practices for")))((("bitcoin improvement proposals", "Multipurpose HD Wallet Structure (BIP-43)")))As bitcoin wallet technology has matured, certain common industry standards have emerged that make bitcoin wallets broadly interoperable, easy to use, secure, and flexible. These common standards are:
-
+<
 * Mnemonic code words, based on BIP-39
 * HD wallets, based on BIP-32
 * Multipurpose HD wallet structure, based on BIP-43
 * Multicurrency and multiaccount wallets, based on BIP-44
-
+>
 These standards may change or may become obsolete by future developments, but for now they form a set of interlocking technologies that have become the de facto wallet standard for bitcoin.
 
-The standards have been adopted by a broad range of software and hardware bitcoin wallets, making all these wallets interoperable. A user can export a mnemonic generated on one of these wallets and import it in another wallet, recovering all transactions, keys, and addresses.
+The standards have been adopted by a broad range of software and hardware bitcoin wallets, making all these wallets interoperable. <A user can export a mnemonic generated on one of these wallets and import it in another wallet, recovering all transactions, keys, and addresses.>
 
 ((("hardware wallets")))((("hardware wallets", see="also wallets")))Some example of software wallets supporting these standards include (listed alphabetically) Breadwallet, Copay, Multibit HD, and Mycelium. Examples of hardware wallets supporting these standards include (listed alphabetically) Keepkey, Ledger, and Trezor.
 
@@ -154,7 +156,7 @@ Let's now examine each of the important industry standards that are used by many
 
 [TIP]
 ====
-((("brainwallets")))Mnemonic words are often confused with "brainwallets." They are not the same. The primary difference is that a brainwallet consists of words chosen by the user, whereas mnemonic words are created randomly by the wallet and presented to the user. This important difference makes mnemonic words much more secure, because humans are very poor sources of randomness.
+((("brainwallets")))Mnemonic words are often confused with "brainwallets." They are not the same. The primary difference is that a brainwallet consists of words chosen by the user, whereas mnemonic words are created randomly by the wallet and presented to the user. <This important difference makes mnemonic words much more secure, because humans are very poor sources of randomness.>
 ====
 
 Mnemonic codes are defined in BIP-39 (see <<appdxbitcoinimpproposals>>). Note that BIP-39 is one implementation of a mnemonic code standard. ((("Electrum wallet", seealso="wallets")))There is a different standard, with a different set of words, used by the Electrum wallet and predating BIP-39. BIP-39 was proposed by the company behind the Trezor hardware wallet and is incompatible with Electrum's implementation. However, BIP-39 has now achieved broad industry support across dozens of interoperable implementations and should be considered the de facto industry standard.
@@ -165,14 +167,14 @@ BIP-39 defines the creation of a mnemonic code and seed, which we describe here 
 ===== Generating mnemonic words
 
 Mnemonic words are generated automatically by the wallet using the standardized process defined in BIP-39. The wallet starts from a source of entropy, adds a checksum, and then maps the entropy to a word list:
-
+<
 1. Create a random sequence (entropy) of 128 to 256 bits.
 2. Create a checksum of the random sequence by taking the first (entropy-length/32) bits of its SHA256 hash.
 3. Add the checksum to the end of the random sequence.
 4. Split the result into 11-bit length segments.
 5. Map each 11-bit value to a word from the predefined dictionary of 2048 words.
 6. The mnemonic code is the sequence of words.
-
+>
 <<generating_entropy_and_encoding>> shows how entropy is used to generate mnemonic words.
 
 [[generating_entropy_and_encoding]]
@@ -197,9 +199,12 @@ image::images/mbc2_0506.png["Generating entropy and encoding as mnemonic words"]
 [[mnemonic_to_seed]]
 ===== From mnemonic to seed
 
-((("key-stretching function")))((("PBKDF2 function")))The mnemonic words represent entropy with a length of 128 to 256 bits. The entropy is then used to derive a longer (512-bit) seed through the use of the key-stretching function PBKDF2. The seed produced is then used to build a deterministic wallet and derive its keys.
+((("key-stretching function")))((("PBKDF2 function")))The mnemonic words represent entropy with a length of 128 to 256 bits. <The entropy is then used to derive a longer (512-bit) seed through the use of the key-stretching function PBKDF2.> The seed produced is then used to build a deterministic wallet and derive its keys.
 
-((("salts")))((("passphrases")))The key-stretching function takes two parameters: the mnemonic and a _salt_. The purpose of a salt in a key-stretching function is to make it difficult to build a lookup table enabling a brute-force attack. In the BIP-39 standard, the salt has another purpose&#x2014;it allows the introduction of a passphrase that serves as an additional security factor protecting the seed, as we will describe in more detail in <<mnemonic_passphrase>>.
+((("salts")))((("passphrases")))The key-stretching function takes two parameters: the mnemonic and a _salt_. <The purpose of a salt in a key-stretching function is to make it difficult to build a lookup table enabling a brute-force attack.> In the BIP-39 standard, the salt has another purpose&#x2014;<it allows the introduction of a passphrase that serves as an additional security factor protecting the seed, as we will describe in more detail in <<mnemonic_passphrase>>.>
+
+<!-- A new salt is randomly generated for each password. In a typical setting, the salt and the password (or its version after Key stretching) are concatenated and processed with a cryptographic hash function, and the resulting output (but not the original password) is stored with the salt in a database. Hashing allows for later authentication without keeping and therefore risking the plaintext password in the event that the authentication data store is compromised. @wikipedia on salt (cryptography) --> 
+
 
 The process described in steps 7 through 9 continues from the process described previously in <<generating_mnemonic_words>>:
 
@@ -329,7 +334,7 @@ The child key derivation functions are based on a one-way hash function that com
 * A seed called a chain code (256 bits)
 * An index number (32 bits)
 
-The chain code is used to introduce deterministic random data to the process, so that knowing the index and a child key is not sufficient to derive other child keys. Knowing a child key does not make it possible to find its siblings, unless you also have the chain code. The initial chain code seed (at the root of the tree) is made from the seed, while subsequent child chain codes are derived from each parent chain code.
+<The chain code is used to introduce deterministic random data to the process, so that knowing the index and a child key is not sufficient to derive other child keys.> Knowing a child key does not make it possible to find its siblings, unless you also have the chain code. The initial chain code seed (at the root of the tree) is made from the seed, while subsequent child chain codes are derived from each parent chain code.
 
 These three items (parent key, chain code, and index) are combined and hashed to generate children keys, as follows.
 
@@ -345,9 +350,9 @@ Repeating the process one level down the tree, each child can in turn become a p
 
 ===== Using derived child keys
 
-Child private keys are indistinguishable from nondeterministic (random) keys. Because the derivation function is a one-way function, the child key cannot be used to find the parent key. The child key also cannot be used to find any siblings. If you have the n~th~ child, you cannot find its siblings, such as the n&#x2013;1 child or the n+1 child, or any other children that are part of the sequence. Only the parent key and chain code can derive all the children. Without the child chain code, the child key cannot be used to derive any grandchildren either. You need both the child private key and the child chain code to start a new branch and derive grandchildren.
+Child private keys are indistinguishable from nondeterministic (random) keys. Because the derivation function is a one-way function, the child key cannot be used to find the parent key. The child key also cannot be used to find any siblings. If you have the n~th~ child, you cannot find its siblings, such as the n&#x2013;1 child or the n+1 child, or any other children that are part of the sequence. Only the parent key and chain code can derive all the children.< Without the child chain code, the child key cannot be used to derive any grandchildren either. You need both the child private key and the child chain code to start a new branch and derive grandchildren.>
 
-So what can the child private key be used for on its own? It can be used to make a public key and a bitcoin address. Then, it can be used to sign transactions to spend anything paid to that address.
+<So what can the child private key be used for on its own? It can be used to make a public key and a bitcoin address. Then, it can be used to sign transactions to spend anything paid to that address.>
 
 [TIP]
 ====
@@ -358,9 +363,9 @@ A child private key, the corresponding public key, and the bitcoin address are a
 
 ((("public and private keys", "extended keys")))((("extended keys")))As we saw earlier, the key derivation function can be used to create children at any level of the tree, based on the three inputs: a key, a chain code, and the index of the desired child. The two essential ingredients are the key and chain code, and combined these are called an _extended key_. The term "extended key" could also be thought of as "extensible key" because such a key can be used to derive children.
 
-Extended keys are stored and represented simply as the concatenation of the 256-bit key and 256-bit chain code into a 512-bit sequence. There are two types of extended keys. An extended private key is the combination of a private key and chain code and can be used to derive child private keys (and from them, child public keys). An extended public key is a public key and chain code, which can be used to create child public keys (_public only_), as described in <<public_key_derivation>>.
+<Extended keys are stored and represented simply as the concatenation of the 256-bit key and 256-bit chain code into a 512-bit sequence. There are two types of extended keys. An extended private key is the combination of a private key and chain code and can be used to derive child private keys (and from them, child public keys). An extended public key is a public key and chain code, which can be used to create child public keys (_public only_), as described in <<public_key_derivation>>.>
 
-Think of an extended key as the root of a branch in the tree structure of the HD wallet. With the root of the branch, you can derive the rest of the branch. The extended private key can create a complete branch, whereas the extended public key can _only_ create a branch of public keys.
+Think of an extended key as the root of a branch in the tree structure of the HD wallet. With the root of the branch, you can derive the rest of the branch. <The extended private key can create a complete branch, whereas the extended public key can _only_ create a branch of public keys.>
 
 [TIP]
 ====
@@ -384,15 +389,17 @@ xpub67xpozcx8pe95XVuZLHXZeG6XWXHpGq6Qv5cmNfi7cS5mtjJ2tgypeQbBs2UAR6KECeeMVKZBPLr
 [[public__child_key_derivation]]
 ===== Public child key derivation
 
-((("public and private keys", "public child key derivation")))As mentioned  previously, a very useful characteristic of HD wallets is the ability to derive public child keys from public parent keys, _without_ having the private keys. This gives us two ways to derive a child public key: either from the child private key, or directly from the parent public key.
+((("public and private keys", "public child key derivation")))As mentioned  previously, a very useful characteristic of HD wallets is the ability to derive public child keys from public parent keys, _without_ having the private keys. <This gives us two ways to derive a child public key: either from the child private key, or directly from the parent public key.>
 
 An extended public key can be used, therefore, to derive all of the _public_ keys (and only the public keys) in that branch of the HD wallet structure.
 
-This shortcut can be used to create very secure public key&#x2013;only deployments where a server or application has a copy of an extended public key and no private keys whatsoever. That kind of deployment can produce an infinite number of public keys and bitcoin addresses, but cannot spend any of the money sent to those addresses. Meanwhile, on another, more secure server, the extended private key can derive all the corresponding private keys to sign transactions and spend the money.
+<This shortcut can be used to create very secure public key&#x2013;only deployments where a server or application has a copy of an extended public key and no private keys whatsoever. That kind of deployment can produce an infinite number of public keys and bitcoin addresses, but cannot spend any of the money sent to those addresses. Meanwhile, on another, more secure server, the extended private key can derive all the corresponding private keys to sign transactions and spend the money.>
 
-One common application of this solution is to install an extended public key on a web server that serves an ecommerce application. The web server can use the public key derivation function to create a new bitcoin address for every transaction (e.g., for a customer shopping cart). The web server will not have any private keys that would be vulnerable to theft. Without HD wallets, the only way to do this is to generate thousands of bitcoin addresses on a separate secure server and then preload them on the ecommerce server. That approach is cumbersome and requires constant maintenance to ensure that the ecommerce server doesn't "run out" of keys.
+<!-- oh hell yeah. so instead of remembering a giant amount of private public key pairs, all you need to remember is the mnemonic (and possible password) to derive all of the entries. but all the server needs is the pub key one -->
 
-((("cold storage")))((("storage", "cold storage")))((("hardware wallets")))Another common application of this solution is for cold-storage or hardware wallets. In that scenario, the extended private key can be stored on a paper wallet or hardware device (such as a Trezor hardware wallet), while the extended public key can be kept online. The user can create "receive" addresses at will, while the private keys are safely stored offline. To spend the funds, the user can use the extended private key on an offline signing bitcoin client or sign transactions on the hardware wallet device (e.g., Trezor). <<CKDpub>> illustrates the mechanism for extending a parent public key to derive child public keys.
+
+One common application of this solution is to install an extended public key on a web server that serves an ecommerce application. <The web server can use the public key derivation function to create a new bitcoin address for every transaction> (e.g., for a customer shopping cart). The web server will not have any private keys that would be vulnerable to theft. Without HD wallets, the only way to do this is to generate thousands of bitcoin addresses on a separate secure server and then preload them on the ecommerce server. That approach is cumbersome and requires constant maintenance to ensure that the ecommerce server doesn't "run out" of keys
+((("cold storage")))((("storage", "cold storage")))((("hardware wallets")))Another common application of this solution is for cold-storage or hardware wallets. <In that scenario, the extended private key can be stored on a paper wallet or hardware device (such as a Trezor hardware wallet), while the extended public key can be kept online. The user can create "receive" addresses at will, while the private keys are safely stored offline. To spend the funds, the user can use the extended private key on an offline signing bitcoin client or sign transactions on the hardware wallet device (e.g., Trezor). <<CKDpub>> illustrates the mechanism for extending a parent public key to derive child public keys.>
 
 [[CKDpub]]
 .Extending a parent public key to create a child public key
@@ -422,9 +429,9 @@ Gabriel copies the xpub to his web store's bitcoin shop software. He uses _Mycel
 
 ===== Hardened child key derivation
 
-((("public and private keys", "hardened child key derivation")))((("hardened derivation")))The ability to derive a branch of public keys from an xpub is very useful, but it comes with a potential risk. Access to an xpub does not give access to child private keys. However, because the xpub contains the chain code, if a child private key is known, or somehow leaked, it can be used with the chain code to derive all the other child private keys. A single leaked child private key, together with a parent chain code, reveals all the private keys of all the children. Worse, the child private key together with a parent chain code can be used to deduce the parent private key.
+((("public and private keys", "hardened child key derivation")))((("hardened derivation")))The ability to derive a branch of public keys from an xpub is very useful, but it comes with a potential risk. Access to an xpub does not give access to child private keys. <However, because the xpub contains the chain code, if a child private key is known, or somehow leaked, it can be used with the chain code to derive all the other child private keys. > A single leaked child private key, together with a parent chain code, reveals all the private keys of all the children. Worse, the child private key together with a parent chain code can be used to deduce the parent private key.
 
-To counter this risk, HD wallets use an alternative derivation function called _hardened derivation_, which "breaks" the relationship between parent public key and child chain code. The hardened derivation function uses the parent private key to derive the child chain code, instead of the parent public key. This creates a "firewall" in the parent/child sequence, with a chain code that cannot be used to compromise a parent or sibling private key. The hardened derivation function looks almost identical to the normal child private key derivation, except that the parent private key is used as input to the hash function, instead of the parent public key, as shown in the diagram in <<CKDprime>>.
+To counter this risk, HD wallets use an alternative derivation function called _hardened derivation_, <which "breaks" the relationship between parent public key and child chain code.> The hardened derivation function uses the parent private key to derive the child chain code, instead of the parent public key. This creates a "firewall" in the parent/child sequence, with a chain code that cannot be used to compromise a parent or sibling private key. The hardened derivation function looks almost identical to the normal child private key derivation, except that the parent private key is used as input to the hash function, instead of the parent public key, as shown in the diagram in <<CKDprime>>.
 
 [[CKDprime]]
 .Hardened derivation of a child key; omits the parent public key
