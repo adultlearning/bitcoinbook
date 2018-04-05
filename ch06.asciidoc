@@ -5,7 +5,7 @@
 [[ch06_intro]]
 === Introduction
 
-((("transactions", "defined")))((("warnings and cautions", see="also security")))Transactions are the most important part of the bitcoin system. Everything else in bitcoin is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger of transactions (the blockchain). Transactions are data structures that encode the transfer of value between participants in the bitcoin system. Each transaction is a public entry in bitcoin's blockchain, the global double-entry bookkeeping ledger.
+((("transactions", "defined")))((("warnings and cautions", see="also security")))Transactions are the most important part of the bitcoin system. <Everything else in bitcoin is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger of transactions (the blockchain).>< Transactions are data structures that encode the transfer of value between participants in the bitcoin system. Each transaction is a public entry in bitcoin's blockchain, the global double-entry bookkeeping ledger.>
 
 In this chapter we will examine all the various forms of transactions, what they contain, how to create them, how they are verified, and how they become part of the permanent record of all transactions. When we use the term "wallet" in this chapter, we are referring to the software that constructs transactions, not just the database of keys.
 
@@ -55,20 +55,20 @@ We can use Bitcoin Core's command-line interface (+getrawtransaction+ and +decod
 }
 ----
 
-You may notice a few things about this transaction, mostly the things that are missing! Where is Alice's address? Where is Bob's address? Where is the 0.1 input "sent" by Alice? In bitcoin, there are no coins, no senders, no recipients, no balances, no accounts, and no addresses. All those things are constructed at a higher level for the benefit of the user, to make things easier to understand.
+You may notice a few things about this transaction, mostly the things that are missing! Where is Alice's address? Where is Bob's address? Where is the 0.1 input "sent" by Alice? <In bitcoin, there are no coins, no senders, no recipients, no balances, no accounts, and no addresses. All those things are constructed at a higher level for the benefit of the user, to make things easier to understand.>
 
 You may also notice a lot of strange and indecipherable fields and hexadecimal strings. Don't worry, we will explain each field shown here in detail in this chapter.
 
 [[tx_inputs_outputs]]
 === Transaction Outputs and Inputs
 
-((("transactions", "outputs and inputs", id="Tout06")))((("outputs and inputs", "outputs defined")))((("unspent transaction outputs (UTXO)")))((("UTXO sets")))((("transactions", "outputs and inputs", "output characteristics")))((("outputs and inputs", "output characteristics")))The fundamental building block of a bitcoin transaction is a  _transaction output_. Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network. Bitcoin full nodes track all available and spendable outputs, known as _unspent transaction outputs_, or _UTXO_. The collection of all UTXO is known as the _UTXO set_ and currently numbers in the millions of UTXO. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.
+((("transactions", "outputs and inputs", id="Tout06")))((("outputs and inputs", "outputs defined")))((("unspent transaction outputs (UTXO)")))((("UTXO sets")))((("transactions", "outputs and inputs", "output characteristics")))((("outputs and inputs", "output characteristics")))<The fundamental building block of a bitcoin transaction is a  _transaction output_.> <Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network.> Bitcoin full nodes track <all available and spendable outputs, known as _unspent transaction outputs_,> or _UTXO_. The collection of all UTXO is known as the _UTXO set_ and currently numbers in the millions of UTXO. <The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.> <!-- woah -->
 
-((("balances")))When we say that a user's wallet has "received" bitcoin, what we mean is that the wallet has detected an UTXO that can be spent with one of the keys controlled by that wallet. Thus, a user's bitcoin "balance" is the sum of all UTXO that user's wallet can spend and which may be scattered among hundreds of transactions and hundreds of blocks. The concept of a balance is created by the wallet application. The wallet calculates the user's balance by scanning the blockchain and aggregating the value of any UTXO the wallet can spend with the keys it controls. Most wallets maintain a database or use a database service to store a quick reference set of all the UTXO they can spend with the keys they control.
+((("balances")))When we say that a user's wallet has "received" bitcoin, <what we mean is that the wallet has detected an UTXO that can be spent with one of the keys controlled by that wallet.> Thus, <a user's bitcoin "balance" is the sum of all UTXO that user's wallet can spend and which may be scattered among hundreds of transactions and hundreds of blocks.> The concept of a balance is created by the wallet application. The wallet calculates the user's balance by scanning the blockchain and aggregating the value of any UTXO the wallet can spend with the keys it controls. <Most wallets maintain a database or use a database service to store a quick reference set of all the UTXO they can spend with the keys they control.>
 
-((("satoshis")))A transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis.  Just as dollars can be divided down to two decimal places as cents, bitcoin can be divided down to eight decimal places as satoshis. Although an output can have any arbitrary value, once created it is indivisible. This is an important characteristic of outputs that needs to be emphasized: outputs are _discrete_ and _indivisible_ units of value, denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction.
+((("satoshis")))<A transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis.>  Just as dollars can be divided down to two decimal places as cents, bitcoin can be divided down to eight decimal places as satoshis. Although an output can have any arbitrary value, <once created it is indivisible.> This is an important characteristic of outputs that needs to be emphasized: <outputs are _discrete_ and _indivisible_ units of value,> denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction.
 
-((("change, making")))If an UTXO is larger than the desired value of a transaction, it must still be consumed in its entirety and change must be generated in the transaction. In other words, if you have an UTXO worth 20 bitcoin and want to pay only 1 bitcoin, your transaction must consume the entire 20-bitcoin UTXO and produce two outputs: one paying 1 bitcoin to your desired recipient and another paying 19 bitcoin in change back to your wallet. As a result of the indivisible nature of transaction outputs, most bitcoin transactions will have to generate change.
+((("change, making")))<If an UTXO is larger than the desired value of a transaction, it must still be consumed in its entirety and change must be generated in the transaction.> In other words, if you have an UTXO worth 20 bitcoin and want to pay only 1 bitcoin, your transaction must consume the entire 20-bitcoin UTXO and produce two outputs: one paying 1 bitcoin to your desired recipient and another paying 19 bitcoin in change back to your wallet. As a result of the indivisible nature of transaction outputs, most bitcoin transactions will have to generate change.
 
 Imagine a shopper buying a $1.50 beverage, reaching into her wallet and trying to find a combination of coins and bank notes to cover the $1.50 cost. The shopper will choose exact change if available e.g. a dollar bill and two quarters (a quarter is $0.25), or a combination of smaller denominations (six quarters), or if necessary, a larger unit such as a $5 note. If she hands too much money, say $5, to the shop owner, she will expect $3.50 change, which she will return to her wallet and have available for future transactions.
 
@@ -76,9 +76,9 @@ Similarly, a bitcoin transaction must be created from a user's UTXO in whatever 
 
 As with real life, the bitcoin application can use several strategies to satisfy the purchase amount: combining several smaller units, finding exact change, or using a single unit larger than the transaction value and making change. All of this complex assembly of spendable UTXO is done by the user's wallet automatically and is invisible to users. It is only relevant if you are programmatically constructing raw transactions from UTXO.
 
-A transaction consumes previously recorded unspent transaction outputs and creates new transaction outputs that can be consumed by a future transaction. This way, chunks of bitcoin value move forward from owner to owner in a chain of transactions consuming and creating UTXO.
+A transaction consumes previously recorded unspent transaction outputs and creates new transaction outputs that can be consumed by a future transaction. <This way, chunks of bitcoin value move forward from owner to owner in a chain of transactions consuming and creating UTXO.>
 
-((("transactions", "coinbase transactions")))((("coinbase transactions")))((("mining and consensus", "coinbase transactions")))The exception to the output and input chain is a special type of transaction called the _coinbase_ transaction, which is the first transaction in each block. This transaction is placed there by the "winning" miner and creates brand-new bitcoin payable to that miner as a reward for mining. This special coinbase transaction does not consume UTXO; instead, it has a special type of input called the "coinbase." This is how bitcoin's money supply is created during the mining process, as we will see in <<mining>>.
+((("transactions", "coinbase transactions")))((("coinbase transactions")))((("mining and consensus", "coinbase transactions")))The exception to the output and input chain is a special type of transaction called the _coinbase_ transaction, which is the first transaction in each block. <This transaction is placed there by the "winning" miner and creates brand-new bitcoin payable to that miner as a reward for mining.> This special coinbase transaction does not consume UTXO; <instead, it has a special type of input called the "coinbase."> This is how bitcoin's money supply is created during the mining process, as we will see in <<mining>>.
 
 [TIP]
 ====
@@ -95,9 +95,9 @@ UTXO are tracked by every full-node bitcoin client in the UTXO set. New transact
 Transaction outputs consist of two parts:
 
 * An amount of bitcoin, denominated in _satoshis_, the smallest bitcoin unit
-* A cryptographic puzzle that determines the conditions required to spend the output
+* A cryptographic puzzle that determines the conditions required to spend the output <--
 
-((("locking scripts")))((("scripting", "locking scripts")))((("witnesses")))((("scriptPubKey")))The cryptographic puzzle is also known as a  _locking script_, a _witness script_, or a +scriptPubKey+.
+((("locking scripts")))((("scripting", "locking scripts")))((("witnesses")))((("scriptPubKey")))<The cryptographic puzzle is also known as a  _locking script_, a _witness script_, or a +scriptPubKey+.>
 
 The transaction scripting language, used in the locking script mentioned previously, is discussed in detail in <<tx_script>>.
 
@@ -107,9 +107,9 @@ Now, let's look at Alice's transaction (shown previously in <<transactions_behin
 ----
 "vout": [
   {
-    "value": 0.01500000,
+    "value": 0.01500000, <!-- value -->
     "scriptPubKey": "OP_DUP OP_HASH160 ab68025513c3dbd2f7b92a94e0581f5d50f654e7 OP_EQUALVERIFY
-    OP_CHECKSIG"
+    OP_CHECKSIG" <!-- puzzle -->
   },
   {
     "value": 0.08450000,
@@ -118,13 +118,13 @@ Now, let's look at Alice's transaction (shown previously in <<transactions_behin
 ]
 ----
 
-As you can see, the transaction contains two outputs. Each output is defined by a value and a cryptographic puzzle. In the encoding shown by Bitcoin Core, the value is shown in bitcoin, but in the transaction itself it is recorded as an integer denominated in satoshis. The second part of each output is the cryptographic puzzle that sets the conditions for spending. Bitcoin Core shows this as +scriptPubKey+ and shows us a human-readable representation of the script.
+As you can see, the transaction contains two outputs. Each output is defined by a value and a cryptographic puzzle. In the encoding shown by Bitcoin Core, the value is shown in bitcoin, but in the transaction itself it is recorded as an integer denominated in satoshis. The second part of each output is the cryptographic puzzle that sets the conditions for spending. <Bitcoin Core shows this as +scriptPubKey+ and shows us a human-readable representation of the script.>
 
 The topic of locking and unlocking UTXO will be discussed later, in <<tx_lock_unlock>>. The scripting language that is used for the script in +scriptPubKey+ is discussed in <<tx_script>>. But before we delve into those topics, we need to understand the overall structure of transaction inputs and outputs.
 
 ===== Transaction serialization&#x2014;outputs
 
-((("transactions", "outputs and inputs", "structure of")))((("outputs and inputs", "structure of")))((("serialization", "outputs")))When transactions are transmitted over the network or exchanged between applications, they are _serialized_. Serialization is the process of converting the internal representation of a data structure into a format that can be transmitted one byte at a time, also known as a byte stream. Serialization is most commonly used for encoding data structures for transmission over a network or for storage in a file. The serialization format of a transaction output is shown in <<tx_out_structure>>.
+((("transactions", "outputs and inputs", "structure of")))((("outputs and inputs", "structure of")))((("serialization", "outputs")))<When transactions are transmitted over the network or exchanged between applications, they are _serialized_.> <!--Serialization is the process of converting the internal representation of a data structure into a format that can be transmitted one byte at a time, also known as a byte stream.> Serialization is most commonly used for encoding data structures for transmission over a network or for storage in a file. The serialization format of a transaction output is shown in <<tx_out_structure>>.
 
 [[tx_out_structure]]
 .Transaction output serialization
@@ -155,6 +155,17 @@ See if you can manually decode Alice's transaction from the serialized hexadecim
 *+8025513c3dbd2f7b92a94e0581f5d50f654e788acd0ef800000000000+*
 *+1976a9147f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a888ac+*
 +00000000+
+
+ok so 60e3160000000000 is 8 bytes (4*16 bits) (and the 0s at end indicate little endian number)
+length is from
+19 to 1976a914ab68025513
+guessing 1976a914 since it repeats
+which is
+19 76 a9 14 that being 00011001 01110110 10101001 00010100 that being (big endian) 25 
+
+hint says 25 or 0x19
+
+
 ====
 
 Here are some hints:
