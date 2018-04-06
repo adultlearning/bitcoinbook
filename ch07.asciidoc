@@ -97,6 +97,8 @@ P2SH was developed to resolve these practical difficulties and to make the use o
 
 ((("redeem scripts")))((("scripting", "redeem scripts")))In P2SH transactions, the locking script that is replaced by a hash is referred to as the _redeem script_ because it is presented to the system at redemption time rather than as a locking script. <<without_p2sh>> shows the script without P2SH and <<with_p2sh>> shows the same script encoded with P2SH.
 
+A new way of thinking: instead of paying to address, you pose a challenge. Whoever can solve the challenge can spend the UTXO. P2SH is a challenge that says: I want the solution SCRIPT to be exactly something. Thus, the solution scripts hash must have the same hash as my desired solution script 
+
 [[without_p2sh]]
 .Complex script without P2SH
 |=======
